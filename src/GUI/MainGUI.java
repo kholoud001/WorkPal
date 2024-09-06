@@ -1,6 +1,8 @@
 package GUI;
 
 import config.DatabaseConfig;
+import services.implementations.MigrationServiceImp;
+import services.interfaces.MigrationServiceInterface;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,7 +13,6 @@ public class MainGUI {
     public void testConnection() {
         try {
             DatabaseConfig dbConfig = DatabaseConfig.getInstance();
-
             Connection connection = dbConfig.getConnection();
 
             if (connection != null && connection.isValid(5)) {
@@ -25,6 +26,17 @@ public class MainGUI {
         } catch (SQLException e) {
             System.out.println("An error occurred while testing the connection: " + e.getMessage());
         }
+    }
+
+    public void MigrateUserEntity(){
+        MigrationServiceInterface migrationService = new MigrationServiceImp();
+        try {
+            migrationService.migrateUsersTable();
+
+        }catch (Exception e){
+            System.out.println("An error occurred while migrating user entities.");
+        }
+
     }
 
 
