@@ -7,28 +7,38 @@ import java.sql.SQLException;
 
 public class DatabaseConfig {
 
-    String urlDB = "jdbc:postgresql://localhost:5432/WorkPal";
-    String usernameDB = "postgres";
-    String passwordDB = "action";
+    private static DatabaseConfig instance;
+    private Connection connection;
+    private String urlDB = "jdbc:postgresql://localhost:5432/WorkPal";
+    private String usernameDB = "postgres";
+    private String passwordDB = "action";
 
 
-    public  Connection getConnection() throws SQLException {
-
-        try{
+    private DatabaseConfig() throws SQLException {
+        try {
             Class.forName("org.postgresql.Driver");
-        }catch (ClassNotFoundException e){
-            System.out.println(e.getMessage());
+            this.connection = DriverManager.getConnection(urlDB, usernameDB, passwordDB);
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Database Connection Creation Failed : " + ex.getMessage());
         }
-
-        return DriverManager.getConnection(urlDB, usernameDB, passwordDB);
     }
 
-    public void closeConnection(Connection conn) throws SQLException {
-        if (conn != null && !conn.isClosed()) {
-            conn.close();
-        }else {
-            System.out.println("Connection null");
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public static DatabaseConfig getInstance() throws SQLException {
+        if (instance == null) {
+            instance = new DatabaseConfig();
+        } else if (instance.getConnection().isClosed()) {
+            instance = new DatabaseConfig();
         }
+
+        return instance;
+    }
+
+    public void closeConnection() throws SQLException {
+        connection.close();
     }
 
 }

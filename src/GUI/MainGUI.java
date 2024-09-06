@@ -9,16 +9,21 @@ public class MainGUI {
 
     // test connection to database
     public void testConnection() {
-        DatabaseConfig dbConfig = new DatabaseConfig();
         try {
-            Connection conn = dbConfig.getConnection();
-            System.out.println("Connected to database");
+            DatabaseConfig dbConfig = DatabaseConfig.getInstance();
 
-            dbConfig.closeConnection(conn);
-            System.out.println("Database closed");
-        } catch (
-                SQLException e) {
-            System.out.println(e.getMessage());
+            Connection connection = dbConfig.getConnection();
+
+            if (connection != null && connection.isValid(5)) {
+                System.out.println("Database connection is valid.");
+            } else {
+                System.out.println("Database connection is not valid.");
+            }
+
+            // dbConfig.closeConnection(connection);
+
+        } catch (SQLException e) {
+            System.out.println("An error occurred while testing the connection: " + e.getMessage());
         }
     }
 
