@@ -6,7 +6,7 @@ public class Main {
 
         MainGUI gui = new MainGUI();
         gui.testConnection();
-        gui.MigrateUserEntity();
+        gui.MigrateEntities();
 
 
     }

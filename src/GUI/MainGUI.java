@@ -28,15 +28,16 @@ public class MainGUI {
         }
     }
 
-    public void MigrateUserEntity(){
+    public void MigrateEntities(){
         MigrationServiceInterface migrationService = new MigrationServiceImp();
         try {
+            migrationService.migrateRolesTable();
             migrationService.migrateUsersTable();
 
         }catch (Exception e){
-            System.out.println("An error occurred while migrating user entities.");
+            System.out.println(e.getMessage());
+            System.out.println("An error occurred while migrating  entities.");
         }
-
     }
 
 
