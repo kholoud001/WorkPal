@@ -48,7 +48,6 @@ public class UserServiceImp  implements UserService {
     public Optional<User> login(String email, String password) {
 
         Optional<User> userOptional = userRepository.findByEmail(email);
-
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (user.getPassword().equals(password)) {
@@ -60,7 +59,7 @@ public class UserServiceImp  implements UserService {
             System.out.println("User with this email does not exist.");
         }
 
-        return Optional.empty();  // Login failed
+        return Optional.empty();
     }
 
 }

@@ -74,7 +74,7 @@ public class UserRepositoryImp implements UserRepository {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    // Create a User object from the result set
+                    
                     User user = new User(
                             resultSet.getInt("id"),
                             resultSet.getString("name"),
