@@ -5,10 +5,7 @@ import entities.User;
 import repositories.interfaces.RoleRepository;
 import repositories.interfaces.UserRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
@@ -23,6 +20,7 @@ public class UserRepositoryImp implements UserRepository {
     public UserRepositoryImp(Connection connection,RoleRepository roleRepository) {
         this.connection = connection;
         this.roleRepository = roleRepository;
+        this.users = new HashMap<>();
     }
 
     public User addUser(User user) {
@@ -34,14 +32,22 @@ public class UserRepositoryImp implements UserRepository {
             statement.setString(4, user.getPhone());
             statement.setString(5, user.getAddress());
             statement.setString(6, user.getProfilePicture());
-            statement.setInt(7,user.getRole().getId());
+            statement.setInt(7, user.getRole().getId());
 
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                user.setId(generatedKeys.getInt("id"));
+            int rowsAffected = statement.executeUpdate();
+
+            // Get the generated key (user ID) if rows were inserted
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        user.setId(generatedKeys.getInt(1));  // Set the generated ID
+                    }
+                }
             }
-                users.put(user.getId(), user);
-        }catch (SQLException e) {
+
+            users.put(user.getId(), user);
+
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
@@ -50,8 +56,12 @@ public class UserRepositoryImp implements UserRepository {
 
     public Optional<User> findByEmail(String email) {
 
-        return users.values().stream()
-                .filter(user -> user.getEmail().equals(email)).findFirst();
+        for (User user : users.values()) {
+            if (user.getEmail().equals(email)) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
     }
 
     public Collection<User> findAll() {

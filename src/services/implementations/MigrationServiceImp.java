@@ -20,7 +20,6 @@ public class MigrationServiceImp implements MigrationServiceInterface {
             statement.execute(createTableSQL);
             System.out.println("Table 'roles' created successfully.");
         }
-
         DatabaseConfig.getInstance().closeConnection();
 
     }
