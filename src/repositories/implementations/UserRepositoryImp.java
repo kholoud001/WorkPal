@@ -69,12 +69,29 @@ public class UserRepositoryImp implements UserRepository {
      *         otherwise an empty `Optional`
      */
     public Optional<User> findByEmail(String email) {
-
-        for (User user : users.values()) {
-            if (user.getEmail().equals(email)) {
-                return Optional.of(user);
+        String query = "SELECT * FROM users WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Create a User object from the result set
+                    User user = new User(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("password"),
+                            resultSet.getString("email"),
+                            resultSet.getString("phone"),
+                            resultSet.getString("address"),
+                            resultSet.getString("profilePicture"),
+                            new Role(resultSet.getInt("id"),resultSet.getString("name"))
+                    );
+                    return Optional.of(user);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
         return Optional.empty();
     }
 

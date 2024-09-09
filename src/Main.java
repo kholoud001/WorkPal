@@ -37,7 +37,8 @@ public class Main {
             RoleService roleService = new RoleServiceImp(roleRepository, connection);
 
            AuthGUI authGUI = new AuthGUI(roleService,userService);
-           authGUI.register();
+           //authGUI.register();
+           authGUI.login();
 
 
 

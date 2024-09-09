@@ -43,4 +43,24 @@ public class UserServiceImp  implements UserService {
     }
 
 
+
+
+    public Optional<User> login(String email, String password) {
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getPassword().equals(password)) {
+                return Optional.of(user);
+            } else {
+                System.out.println("Incorrect password.");
+            }
+        } else {
+            System.out.println("User with this email does not exist.");
+        }
+
+        return Optional.empty();  // Login failed
+    }
+
 }

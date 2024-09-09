@@ -2,6 +2,7 @@ package GUI;
 
 import config.DatabaseConfig;
 import entities.Role;
+import entities.User;
 import repositories.implementations.RoleRepositoryImp;
 import repositories.implementations.UserRepositoryImp;
 import repositories.interfaces.RoleRepository;
@@ -13,6 +14,7 @@ import services.interfaces.UserService;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -100,6 +102,26 @@ public class AuthGUI {
         }
     }
 
+
+    public void login() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Entrez votre adresse e-mail:");
+        String email = scanner.nextLine();
+
+        System.out.println("Entrez votre mot de passe:");
+        String password = scanner.nextLine();
+
+        Optional<User> userOptional = userService.login(email, password);
+        System.out.println(userOptional.get().getName());
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            System.out.println("Connexion réussie! Bienvenue, " + user.getName() + ".");
+        } else {
+            System.out.println("Échec de la connexion. Vérifiez vos identifiants.");
+        }
+    }
 
     public void  testRegister() throws SQLException {
         DatabaseConfig dbConfig = DatabaseConfig.getInstance();
