@@ -28,6 +28,7 @@ public class MainGUI {
         }
     }
 
+    //Migrate entities
     public void MigrateEntities(){
         MigrationServiceInterface migrationService = new MigrationServiceImp();
         try {

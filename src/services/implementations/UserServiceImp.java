@@ -38,7 +38,7 @@ public class UserServiceImp  implements UserService {
         // Create and save new user
         User user = new User(0, name, password, email, phone, address, profilePicture, roleOptional.get());
         userRepository.addUser(user);
-        System.out.println("User registered successfully!");
+        //System.out.println("User registered successfully!");
         return true;
     }
 

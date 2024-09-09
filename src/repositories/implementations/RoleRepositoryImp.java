@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class RoleRepositoryImp implements RoleRepository {
@@ -17,7 +19,13 @@ public class RoleRepositoryImp implements RoleRepository {
     }
 
 
-
+    /**
+     * Finds a role by its ID from the database.
+     *
+     * @param roleId the ID of the role to be retrieved
+     * @return an `Optional<Role>` containing the role if found, or an empty `Optional` if not
+     * @throws RuntimeException if an SQL exception occurs during the query execution
+     */
     public Optional<Role> findById(int roleId) {
         String query = "SELECT * FROM roles WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -33,6 +41,15 @@ public class RoleRepositoryImp implements RoleRepository {
         return Optional.empty();
     }
 
+
+
+    /**
+     * Finds a role by its name from the database.
+     *
+     * @param name the name of the role to be retrieved
+     * @return an `Optional<Role>` containing the role if found, or an empty `Optional` if not
+     * @throws RuntimeException if an SQL exception occurs during the query execution
+     */
     public Optional<Role> findByName(String name) {
         String query = "SELECT * FROM roles WHERE name = ?";
         try(PreparedStatement statement=connection.prepareStatement(query)){
@@ -46,6 +63,26 @@ public class RoleRepositoryImp implements RoleRepository {
         }
         return Optional.empty();
     }
+
+    public List<Role> findAll() {
+        List<Role> roles = new ArrayList<>();
+        String query = "SELECT * FROM roles";  // Adjust table name as needed
+
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Role role = new Role(resultSet.getInt("id"), resultSet.getString("name"));
+                roles.add(role);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return roles;
+    }
+
 
 
 }
