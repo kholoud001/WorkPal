@@ -8,8 +8,9 @@ public class User {
     private String phone;
     private String address;
     private String profilePicture;
+    private Role role;
 
-    public User(int id, String name, String password, String email, String phone, String address, String profilePicture) {
+    public User(int id, String name, String password, String email, String phone, String address, String profilePicture, Role role) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -17,6 +18,7 @@ public class User {
         this.phone = phone;
         this.address = address;
         this.profilePicture = profilePicture;
+        this.role = role;
     }
 
     public int getId() {
