@@ -41,7 +41,6 @@ public class RoleRepositoryImp implements RoleRepository {
             if(resultSet.next()) {
                 return Optional.of(new Role(resultSet.getInt("id"),resultSet.getString("name")));
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
