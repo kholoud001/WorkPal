@@ -77,7 +77,7 @@ public class UserServiceImp  implements UserService {
     public Optional<User> addMemberOrManager(User currentUser, String name, String password, String email, String phone, String address, String profilePicture, Integer roleId) throws NoSuchAlgorithmException {
 
         if (currentUser.getRole().getId()!=1) {
-            System.out.println("Only admins can add new members or managers.");
+            System.out.println("\n Only admins can add new members or managers.");
             return Optional.empty();
         }
 

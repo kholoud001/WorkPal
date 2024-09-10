@@ -27,10 +27,10 @@ public class AuthGUI {
         Scanner scanner = new Scanner(System.in);
         System.out.println("*********** Login ***********");
 
-        System.out.println("Entrez votre adresse e-mail:");
+        System.out.println("Enter your e-mail address:");
         String email = scanner.nextLine();
 
-        System.out.println("Entrez votre mot de passe:");
+        System.out.println("Enter your password:");
         String password = scanner.nextLine();
 
         Optional<User> userOptional = userService.login(email, password);
@@ -38,9 +38,9 @@ public class AuthGUI {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            System.out.println("Connexion réussie! Bienvenue, " + user.getName() + ".");
+            System.out.println("Successfully connected! Welcome, " + user.getName() + ".");
         } else {
-            System.out.println("Échec de la connexion. Vérifiez vos identifiants.");
+            System.out.println("Unsuccessfully connected! Please try again.");
         }
         return userOptional;
     }

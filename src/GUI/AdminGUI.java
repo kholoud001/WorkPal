@@ -7,15 +7,57 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 import java.util.Scanner;
 
+
+
 public class AdminGUI {
 
     private final UserService userService;
     private final User currentUser;
 
+
     public AdminGUI(UserService userService, User currentUser) {
         this.userService = userService;
         this.currentUser = currentUser;
     }
+
+    public void displayMenuAdmin() {
+        final Scanner scanner = null;
+
+        int choix;
+        do {
+            // Display the menu
+            System.out.println("\n*** Admin Management Panel: ***");
+            System.out.println("1. Add User");
+            System.out.println("2. Modify User");
+            System.out.println("3. Delete User");
+
+            System.out.println("0. Exit");
+            System.out.print("Choose an option: ");
+
+            choix = Integer.parseInt(scanner.nextLine());
+
+            switch (choix) {
+                case 1:
+                    addNewUser();
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                case 0:
+                    System.out.println("Exiting Admin Menu...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+
+        } while (choix != 0);
+    }
+
+
+
 
     public void addNewUser() {
         Scanner scanner = new Scanner(System.in);

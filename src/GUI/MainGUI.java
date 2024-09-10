@@ -81,16 +81,14 @@ public class MainGUI {
         // Check if the user is logged in and if they are an admin
         if (loggedInUserOptional.isPresent()) {
             User loggedInUser = loggedInUserOptional.get();
-            System.out.println("Role ID: " + loggedInUser.getRole().getId());
+            //System.out.println("Role ID: " + loggedInUser.getRole().getId());
 
             // Only proceed if the logged-in user is an admin (roleId = 1)
             if (loggedInUser.getRole().getId() == 1) {
                 System.out.println("Welcome Admin!");
 
-                // Instantiate AdminGUI with the logged-in user
                 AdminGUI adminGUI = new AdminGUI(userService, loggedInUser);
 
-                // Call the addNewUser() method to add a new member or manager
                 adminGUI.addNewUser();
             } else {
                 System.out.println("You are not authorized to add new users. Only admins can perform this action.");
@@ -98,6 +96,11 @@ public class MainGUI {
         } else {
             System.out.println("Login failed. Please try again.");
         }
+    }
+
+    /////// start Admin
+    public void start(){
+
     }
 
 
