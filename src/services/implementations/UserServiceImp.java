@@ -106,7 +106,6 @@ public class UserServiceImp  implements UserService {
 
         Role role = roleOptional.get();
 
-
         if (!role.getRoleName().equalsIgnoreCase("member") && !role.getRoleName().equalsIgnoreCase("manager")) {
             System.out.println("Only 'member' or 'manager' roles can be assigned.");
             return Optional.empty();
@@ -116,6 +115,73 @@ public class UserServiceImp  implements UserService {
 
         User addedUser = userRepository.addUser(newUser);
         return Optional.ofNullable(addedUser);
+    }
+
+    public Optional<User> updateUser(User currentUser, Integer userId, String name, String password, String email, String phone, String address, String profilePicture, Integer roleId) throws NoSuchAlgorithmException {
+        // Only admins can update users
+        if (currentUser.getRole().getId() != 1) {
+            System.out.println("\n Only admins can update users.");
+            return Optional.empty();
+        }
+
+        // Retrieve the existing user by userId
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            System.out.println("User not found.");
+            return Optional.empty();
+        }
+
+        User userToUpdate = userOptional.get();
+
+        if (name != null && !name.isEmpty()) {
+            userToUpdate.setName(name);
+        }
+
+        if (password != null && !password.isEmpty()) {
+            try {
+                String hashedPassword = PasswordUtils.hashPassword(password);
+                userToUpdate.setPassword(hashedPassword);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                System.out.println("Error hashing password.");
+                return Optional.empty();
+            }
+        }
+
+        if (email != null && !email.isEmpty()) {
+            userToUpdate.setEmail(email);
+        }
+
+        if (phone != null && !phone.isEmpty()) {
+            userToUpdate.setPhone(phone);
+        }
+
+        if (address != null && !address.isEmpty()) {
+            userToUpdate.setAddress(address);
+        }
+
+        if (profilePicture != null && !profilePicture.isEmpty()) {
+            userToUpdate.setProfilePicture(profilePicture);
+        }
+
+        if (roleId != null) {
+            Optional<Role> roleOptional = roleRepository.findById(roleId);
+            if (!roleOptional.isPresent()) {
+                System.out.println("Invalid role ID.");
+                return Optional.empty();
+            }
+
+            Role role = roleOptional.get();
+            if (!role.getRoleName().equalsIgnoreCase("member") && !role.getRoleName().equalsIgnoreCase("manager")) {
+                System.out.println("Only 'member' or 'manager' roles can be assigned.");
+                return Optional.empty();
+            }
+
+            userToUpdate.setRole(role);
+        }
+
+        User updatedUser = userRepository.updateUser(userToUpdate);
+        return Optional.ofNullable(updatedUser);
     }
 
 

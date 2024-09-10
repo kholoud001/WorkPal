@@ -11,8 +11,11 @@ public interface UserRepository {
     public User addUser(User user) throws NoSuchAlgorithmException;
 
     public Optional<User> findByEmail(String email);
+    public Optional<User> findById(int userId);
 
     public Collection<User> findAll();
 
     public Collection<User> findUserByRole(Role role);
+
+    User updateUser(User userToUpdate);
 }

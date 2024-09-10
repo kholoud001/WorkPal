@@ -42,7 +42,7 @@ public class AdminGUI {
                     addNewUser();
                     break;
                 case 2:
-
+                    updateExistingUser();
                     break;
                 case 3:
 
@@ -56,7 +56,6 @@ public class AdminGUI {
 
         } while (choix != 0);
     }
-
 
 
 
@@ -104,7 +103,6 @@ public class AdminGUI {
         System.out.println("Enter the role ID (1 for Admin, 2 for Member, 3 for Manager):");
         Integer roleId = Integer.parseInt(scanner.nextLine());
 
-        // Call the service method to add the user
         try {
             Optional<User> newUserOptional = userService.addMemberOrManager(
                     currentUser, name, password, email, phone, address, profilePicture, roleId
@@ -119,5 +117,74 @@ public class AdminGUI {
             System.out.println("Error: Could not add user due to password hashing issues.");
         }
     }
+
+    public void updateExistingUser() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("*********** Update User ***********");
+
+        // Get user ID to update
+        System.out.println("Enter the User ID to update:");
+        Integer userId = Integer.parseInt(scanner.nextLine());
+
+        // Prompt for new values (can be left empty to keep the existing value)
+        System.out.println("Enter the new name (leave blank to keep the current name):");
+        String name = scanner.nextLine();
+
+        System.out.println("Enter the new password (leave blank to keep the current password):");
+        String password = scanner.nextLine();
+
+        // Validate Email
+        String email;
+        while (true) {
+            System.out.println("Enter new Email (leave blank to keep the current email):");
+            email = scanner.nextLine();
+            if (email.isEmpty() || ValidateUtils.isValidEmail(email)) {
+                break;
+            } else {
+                System.out.println("Invalid email format. Please try again.");
+            }
+        }
+
+        // Validate Phone Number
+        String phone;
+        while (true) {
+            System.out.println("Enter new Phone (leave blank to keep the current phone, 9 digits):");
+            phone = scanner.nextLine();
+            if (phone.isEmpty() || ValidateUtils.isValidPhone(phone)) {
+                break;
+            } else {
+                System.out.println("Invalid phone number format. It should be exactly 9 digits.");
+            }
+        }
+
+        System.out.println("Enter new address (leave blank to keep the current address):");
+        String address = scanner.nextLine();
+
+        System.out.println("Enter new profile picture (leave blank to keep the current profile picture):");
+        String profilePicture = scanner.nextLine();
+
+        // Role input
+        System.out.println("Enter the new role ID (leave blank to keep the current role):");
+        String roleIdInput = scanner.nextLine();
+        Integer roleId = roleIdInput.isEmpty() ? null : Integer.parseInt(roleIdInput);
+
+        try {
+            Optional<User> updatedUserOptional = userService.updateUser(
+                    currentUser, userId, name, password, email, phone, address, profilePicture, roleId
+            );
+
+            if (updatedUserOptional.isPresent()) {
+                System.out.println("User updated successfully! Name: " + updatedUserOptional.get().getName());
+            } else {
+                System.out.println("Failed to update user.");
+            }
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Error: Could not update user due to password hashing issues.");
+        }
+    }
+
+
+
 
 }
