@@ -5,6 +5,9 @@ public class Role {
     private int id;
     private String roleName;
 
+   public Role(int id) {
+       this.id = id;
+   }
 
     public Role(int id, String roleName) {
         this.id = id;
@@ -21,6 +24,10 @@ public class Role {
     }
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public String toString() {
+        return "Role [id=" + id + ", roleName=" + roleName + "]";
     }
 
 

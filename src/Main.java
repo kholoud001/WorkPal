@@ -1,3 +1,4 @@
+import GUI.AdminGUI;
 import GUI.AuthGUI;
 import GUI.MainGUI;
 import config.DatabaseConfig;
@@ -16,6 +17,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class Main {
 
@@ -23,9 +25,10 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException {
 
-//        MainGUI gui = new MainGUI();
+      MainGUI gui = new MainGUI();
 //        gui.testConnection();
 //        gui.MigrateEntities();
+        gui.addUserforAdmin();
 
         DatabaseConfig dbConfig = DatabaseConfig.getInstance();
         Connection connection = dbConfig.getConnection();
@@ -37,9 +40,18 @@ public class Main {
             UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
             RoleService roleService = new RoleServiceImp(roleRepository, connection);
 
-           AuthGUI authGUI = new AuthGUI(roleService,userService);
-           authGUI.register();
+          // AuthGUI authGUI = new AuthGUI(roleService,userService);
+           //authGUI.register();
            //authGUI.login();
+
+
+
+
+
+
+
+
+
 
 
 

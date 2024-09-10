@@ -1,19 +1,11 @@
 package GUI;
 
-import config.DatabaseConfig;
 import entities.Role;
 import entities.User;
-import repositories.implementations.RoleRepositoryImp;
-import repositories.implementations.UserRepositoryImp;
-import repositories.interfaces.RoleRepository;
-import repositories.interfaces.UserRepository;
-import services.implementations.UserServiceImp;
 import services.interfaces.RoleService;
 import services.interfaces.UserService;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -29,6 +21,28 @@ public class AuthGUI {
     public AuthGUI(RoleService roleService, UserService userService) {
         this.roleService = roleService;
         this.userService = userService;
+    }
+
+    public Optional<User> login() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("*********** Login ***********");
+
+        System.out.println("Entrez votre adresse e-mail:");
+        String email = scanner.nextLine();
+
+        System.out.println("Entrez votre mot de passe:");
+        String password = scanner.nextLine();
+
+        Optional<User> userOptional = userService.login(email, password);
+        // System.out.println(userOptional.get().getName());
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            System.out.println("Connexion réussie! Bienvenue, " + user.getName() + ".");
+        } else {
+            System.out.println("Échec de la connexion. Vérifiez vos identifiants.");
+        }
+        return userOptional;
     }
 
     public void register() throws NoSuchAlgorithmException {
@@ -102,28 +116,6 @@ public class AuthGUI {
             System.out.println("User registered successfully!");
         } else {
             System.out.println("Registration failed. Please try again.");
-        }
-    }
-
-
-    public void login() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("*********** Login ***********");
-
-        System.out.println("Entrez votre adresse e-mail:");
-        String email = scanner.nextLine();
-
-        System.out.println("Entrez votre mot de passe:");
-        String password = scanner.nextLine();
-
-        Optional<User> userOptional = userService.login(email, password);
-       // System.out.println(userOptional.get().getName());
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            System.out.println("Connexion réussie! Bienvenue, " + user.getName() + ".");
-        } else {
-            System.out.println("Échec de la connexion. Vérifiez vos identifiants.");
         }
     }
 

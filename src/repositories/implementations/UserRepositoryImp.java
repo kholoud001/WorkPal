@@ -87,7 +87,7 @@ public class UserRepositoryImp implements UserRepository {
                             resultSet.getString("phone"),
                             resultSet.getString("address"),
                             resultSet.getString("profilePicture"),
-                            new Role(resultSet.getInt("id"),resultSet.getString("name"))
+                            new Role(resultSet.getInt("roleid"))
                     );
                     return Optional.of(user);
                 }

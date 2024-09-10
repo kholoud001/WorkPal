@@ -10,6 +10,9 @@ public class User {
     private String profilePicture;
     private Role role;
 
+    public User() {
+    }
+
     public User(int id, String name, String password, String email, String phone, String address, String profilePicture, Role role) {
         this.id = id;
         this.name = name;
