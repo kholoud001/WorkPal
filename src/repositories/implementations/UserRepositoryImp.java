@@ -96,6 +96,30 @@ public class UserRepositoryImp implements UserRepository {
         }
     }
 
+
+    public User deleteUser(User user) {
+        String query = "DELETE FROM users WHERE id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            // Set the ID of the user to be deleted
+            preparedStatement.setInt(1, user.getId());
+
+            // Execute the update to delete the user
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                //System.out.println("User deleted successfully!");
+                return user;
+            } else {
+                //System.out.println("User deletion failed. No user found with the given ID.");
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error occurred while deleting user.");
+            return null;
+        }
+    }
+
     /**
      * Finds a user by their email address in the users collection.
      *

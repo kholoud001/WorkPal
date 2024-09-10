@@ -18,4 +18,5 @@ public interface UserRepository {
     public Collection<User> findUserByRole(Role role);
 
     User updateUser(User userToUpdate);
+    public User deleteUser(User user);
 }

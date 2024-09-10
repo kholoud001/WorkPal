@@ -184,6 +184,33 @@ public class UserServiceImp  implements UserService {
         return Optional.ofNullable(updatedUser);
     }
 
+    public Optional<User> deleteUser(User currentUser, Integer userId) {
+        // Only admins can delete users
+        if (currentUser.getRole().getId() != 1) {
+            System.out.println("\n Only admins can delete users.");
+            return Optional.empty();
+        }
+
+        // Retrieve the user by userId
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            System.out.println("User not found.");
+            return Optional.empty();
+        }
+
+        User userToDelete = userOptional.get();
+
+        // Call the repository method to delete the user
+        User deletedUser = userRepository.deleteUser(userToDelete);
+        if (deletedUser != null) {
+            //System.out.println("User deleted successfully: " + deletedUser.getName());
+            return Optional.of(deletedUser);
+        } else {
+            //System.out.println("Failed to delete the user.");
+            return Optional.empty();
+        }
+    }
+
 
 
 

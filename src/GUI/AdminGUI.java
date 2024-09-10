@@ -45,7 +45,7 @@ public class AdminGUI {
                     updateExistingUser();
                     break;
                 case 3:
-
+                    deleteUser();
                     break;
                 case 0:
                     System.out.println("Exiting Admin Menu...");
@@ -183,6 +183,25 @@ public class AdminGUI {
             System.out.println("Error: Could not update user due to password hashing issues.");
         }
     }
+
+    public void deleteUser() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt admin to enter the user ID to delete
+        System.out.println("*********** Delete User ***********");
+        System.out.println("Enter the User ID to delete:");
+        int userId = Integer.parseInt(scanner.nextLine());
+
+        Optional<User> deletedUserOptional = userService.deleteUser(currentUser, userId);
+
+        if (deletedUserOptional.isPresent()) {
+            User deletedUser = deletedUserOptional.get();
+            System.out.println("User deleted successfully: " + deletedUser.getName());
+        } else {
+            System.out.println("Failed to delete the user or user not found.");
+        }
+    }
+
 
 
 
