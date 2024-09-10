@@ -28,21 +28,10 @@ public class Main {
       MainGUI gui = new MainGUI();
 //        gui.testConnection();
 //        gui.MigrateEntities();
-        gui.addUserforAdmin();
+        //gui.addUserforAdmin();
+        gui.start();
 
-        DatabaseConfig dbConfig = DatabaseConfig.getInstance();
-        Connection connection = dbConfig.getConnection();
-            // Instantiate repositories
-            RoleRepository roleRepository = new RoleRepositoryImp(connection);
-            UserRepository userRepository = new UserRepositoryImp(connection, roleRepository);
 
-            // Instantiate a concrete implementation of UserService
-            UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
-            RoleService roleService = new RoleServiceImp(roleRepository, connection);
-
-          // AuthGUI authGUI = new AuthGUI(roleService,userService);
-           //authGUI.register();
-           //authGUI.login();
 
 
 

@@ -13,10 +13,11 @@ import services.interfaces.MigrationServiceInterface;
 import services.interfaces.RoleService;
 import services.interfaces.UserService;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
-
+import java.util.Scanner;
 
 
 public class MainGUI {
@@ -35,10 +36,69 @@ public class MainGUI {
     UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
     RoleService roleService = new RoleServiceImp(roleRepository, connection);
     //GUI for authentification
-    AuthGUI authGUI = new AuthGUI(roleService,userService);
+    AuthGUI authGUI = new AuthGUI(roleService, userService);
 
 
     public MainGUI() throws SQLException {
+
+    }
+    // Start the application
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+        Optional<User> loggedInUser = Optional.empty();
+        boolean exit = false;
+
+        while (!exit) {
+            System.out.println("\n*** Welcome ***");
+            System.out.println("1. Login");
+            System.out.println("2. Register");
+            System.out.println("0. Exit");
+            System.out.print("Choose an option: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    loggedInUser = authGUI.login();
+                    if (loggedInUser.isPresent()) {
+                        User user = loggedInUser.get();
+                        if (user.getRole().getId()==1) {
+                            AdminGUI adminGUI = new AdminGUI(userService, user);
+                            adminGUI.displayMenuAdmin();
+                        } else {
+                            System.out.println("You are logged in as a regular user.");
+                        }
+                    }
+                    break;
+
+                case "2":
+                    try {
+                        authGUI.register();
+                        loggedInUser = authGUI.login();
+                        if (loggedInUser.isPresent()) {
+                            User user = loggedInUser.get();
+                            if (user.getRole().getId()==1) {
+                                AdminGUI adminGUI = new AdminGUI(userService, user);
+                                adminGUI.displayMenuAdmin();
+                            } else {
+                                System.out.println("You are logged in as a regular user.");
+                            }
+                        }
+                    } catch (NoSuchAlgorithmException e) {
+                        System.out.println("Registration error: " + e.getMessage());
+                    }
+                    break;
+
+                case "0":
+                    System.out.println("Exiting the application...");
+                    exit = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+        scanner.close();
     }
 
 
@@ -62,46 +122,20 @@ public class MainGUI {
     }
 
     //Migrate entities
-    public void MigrateEntities(){
+    public void MigrateEntities() {
         try {
             migrationService.migrateRolesTable();
             migrationService.migrateUsersTable();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("An error occurred while migrating  entities.");
         }
     }
 
 
-    ///////////// Admin User Management
-    public void addUserforAdmin(){
-        Optional<User> loggedInUserOptional = authGUI.login();
 
-        // Check if the user is logged in and if they are an admin
-        if (loggedInUserOptional.isPresent()) {
-            User loggedInUser = loggedInUserOptional.get();
-            //System.out.println("Role ID: " + loggedInUser.getRole().getId());
 
-            // Only proceed if the logged-in user is an admin (roleId = 1)
-            if (loggedInUser.getRole().getId() == 1) {
-                System.out.println("Welcome Admin!");
-
-                AdminGUI adminGUI = new AdminGUI(userService, loggedInUser);
-
-                adminGUI.addNewUser();
-            } else {
-                System.out.println("You are not authorized to add new users. Only admins can perform this action.");
-            }
-        } else {
-            System.out.println("Login failed. Please try again.");
-        }
-    }
-
-    /////// start Admin
-    public void start(){
-
-    }
 
 
 }

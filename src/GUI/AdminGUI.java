@@ -2,6 +2,7 @@ package GUI;
 
 import entities.User;
 import services.interfaces.UserService;
+import utils.ValidateUtils;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class AdminGUI {
     }
 
     public void displayMenuAdmin() {
-        final Scanner scanner = null;
+        Scanner scanner = new Scanner(System.in);
 
         int choix;
         do {
@@ -70,11 +71,29 @@ public class AdminGUI {
         System.out.println("Enter the password:");
         String password = scanner.nextLine();
 
-        System.out.println("Enter the email:");
-        String email = scanner.nextLine();
+        // Validate Email
+        String email;
+        while (true) {
+            System.out.println("Enter Email:");
+            email = scanner.nextLine();
+            if (ValidateUtils.isValidEmail(email)) {
+                break;
+            } else {
+                System.out.println("Invalid email format. Please try again.");
+            }
+        }
 
-        System.out.println("Enter the phone:");
-        String phone = scanner.nextLine();
+        // Validate Phone Number
+        String phone;
+        while (true) {
+            System.out.println("Enter Phone (9 digits):");
+            phone = scanner.nextLine();
+            if (ValidateUtils.isValidPhone(phone)) {
+                break;
+            } else {
+                System.out.println("Invalid phone number format. It should be exactly 9 digits.");
+            }
+        }
 
         System.out.println("Enter the address:");
         String address = scanner.nextLine();

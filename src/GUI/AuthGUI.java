@@ -4,6 +4,7 @@ import entities.Role;
 import entities.User;
 import services.interfaces.RoleService;
 import services.interfaces.UserService;
+import utils.ValidateUtils;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -62,7 +63,7 @@ public class AuthGUI {
         while (true) {
             System.out.println("Enter Email:");
             email = scanner.nextLine();
-            if (isValidEmail(email)) {
+            if (ValidateUtils.isValidEmail(email)) {
                 break;
             } else {
                 System.out.println("Invalid email format. Please try again.");
@@ -74,7 +75,7 @@ public class AuthGUI {
         while (true) {
             System.out.println("Enter Phone (9 digits):");
             phone = scanner.nextLine();
-            if (isValidPhone(phone)) {
+            if (ValidateUtils.isValidPhone(phone)) {
                 break;
             } else {
                 System.out.println("Invalid phone number format. It should be exactly 9 digits.");
@@ -120,15 +121,5 @@ public class AuthGUI {
     }
 
 
-    // Email validation method using regex
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        return Pattern.matches(emailRegex, email);
-    }
 
-    // Phone validation method for exactly 9 digits
-    private boolean isValidPhone(String phone) {
-        String phoneRegex = "\\d{9}";  // Phone must be exactly 9 digits
-        return Pattern.matches(phoneRegex, phone);
-    }
 }
