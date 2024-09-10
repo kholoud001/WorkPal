@@ -11,6 +11,7 @@ import services.implementations.UserServiceImp;
 import services.interfaces.RoleService;
 import services.interfaces.UserService;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -30,8 +31,10 @@ public class AuthGUI {
         this.userService = userService;
     }
 
-    public void register() {
+    public void register() throws NoSuchAlgorithmException {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("*********** Regsiter ***********");
+
 
         // Get user input
         System.out.println("Enter Name:");
@@ -105,6 +108,7 @@ public class AuthGUI {
 
     public void login() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("*********** Login ***********");
 
         System.out.println("Entrez votre adresse e-mail:");
         String email = scanner.nextLine();
@@ -113,33 +117,13 @@ public class AuthGUI {
         String password = scanner.nextLine();
 
         Optional<User> userOptional = userService.login(email, password);
-        System.out.println(userOptional.get().getName());
+       // System.out.println(userOptional.get().getName());
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             System.out.println("Connexion réussie! Bienvenue, " + user.getName() + ".");
         } else {
             System.out.println("Échec de la connexion. Vérifiez vos identifiants.");
-        }
-    }
-
-    public void  testRegister() throws SQLException {
-        DatabaseConfig dbConfig = DatabaseConfig.getInstance();
-        try (Connection connection = dbConfig.getConnection()) {
-            // Instantiate repositories
-            RoleRepository roleRepository = new RoleRepositoryImp(connection);
-            UserRepository userRepository = new UserRepositoryImp(connection, roleRepository);
-
-            // Instantiate a concrete implementation of UserService
-            UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
-
-            // Register Admin
-            //userService.register("Admin", "admin@gmail.com", "admin@gmail.com", "555-555-5555", "123 Main St", "john.png", 1);
-            userService.register("kiki kiki", "password123", "kiki@example.com", "555-555-5555", "123 Main St", "john.png", 2);
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();  // Handle SQL exceptions
         }
     }
 

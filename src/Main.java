@@ -11,6 +11,7 @@ import services.implementations.UserServiceImp;
 import services.interfaces.RoleService;
 import services.interfaces.UserService;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ public class Main {
 
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, NoSuchAlgorithmException {
 
 //        MainGUI gui = new MainGUI();
 //        gui.testConnection();
@@ -37,8 +38,8 @@ public class Main {
             RoleService roleService = new RoleServiceImp(roleRepository, connection);
 
            AuthGUI authGUI = new AuthGUI(roleService,userService);
-           //authGUI.register();
-           authGUI.login();
+           authGUI.register();
+           //authGUI.login();
 
 
 

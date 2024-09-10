@@ -17,6 +17,6 @@ public class RoleServiceImp implements RoleService {
     }
 
     public List<Role> getAllRoles() {
-        return roleRepository.findAll();
+        return roleRepository.findRoleApartAdmin();
     }
 }

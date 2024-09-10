@@ -5,7 +5,9 @@ import entities.User;
 import repositories.interfaces.RoleRepository;
 import repositories.interfaces.UserRepository;
 import services.interfaces.UserService;
+import utils.PasswordUtils;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.util.Optional;
 
@@ -22,7 +24,7 @@ public class UserServiceImp  implements UserService {
     }
 
 
-    public boolean register(String name, String password, String email, String phone, String address, String profilePicture, Integer roleId) {
+    public boolean register(String name, String password, String email, String phone, String address, String profilePicture, Integer roleId) throws NoSuchAlgorithmException {
         if (userRepository.findByEmail(email).isPresent()) {
             System.out.println("User with this email already exists.");
             return false;
@@ -48,12 +50,21 @@ public class UserServiceImp  implements UserService {
     public Optional<User> login(String email, String password) {
 
         Optional<User> userOptional = userRepository.findByEmail(email);
+
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (user.getPassword().equals(password)) {
-                return Optional.of(user);
-            } else {
-                System.out.println("Incorrect password.");
+
+            try {
+                String hashedPassword = PasswordUtils.hashPassword(password);
+
+                if (user.getPassword().equals(hashedPassword)) {
+                    return Optional.of(user);
+                } else {
+                    System.out.println("Incorrect password.");
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                System.out.println("Error hashing password: " + e.getMessage());
             }
         } else {
             System.out.println("User with this email does not exist.");

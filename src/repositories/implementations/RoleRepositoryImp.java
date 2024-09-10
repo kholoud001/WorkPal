@@ -66,7 +66,28 @@ public class RoleRepositoryImp implements RoleRepository {
 
     public List<Role> findAll() {
         List<Role> roles = new ArrayList<>();
-        String query = "SELECT * FROM roles";  // Adjust table name as needed
+        String query = "SELECT * FROM roles";
+
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Role role = new Role(resultSet.getInt("id"), resultSet.getString("name"));
+                roles.add(role);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return roles;
+    }
+
+    public List<Role> findRoleApartAdmin() {
+        List<Role> roles = new ArrayList<>();
+        String query = "SELECT * FROM roles AS r \n" +
+                "WHERE r.name = 'MANAGER'\n" +
+                "OR r.name='MEMBER'";
 
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {

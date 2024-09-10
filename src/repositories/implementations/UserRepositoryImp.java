@@ -4,7 +4,9 @@ import entities.Role;
 import entities.User;
 import repositories.interfaces.RoleRepository;
 import repositories.interfaces.UserRepository;
+import utils.PasswordUtils;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,11 +32,13 @@ public class UserRepositoryImp implements UserRepository {
      * @return the `User` object with the updated ID field if the insertion is successful,
      *         otherwise returns the original `User` object with an unchanged ID
      */
-    public User addUser(User user) {
+    public User addUser(User user) throws NoSuchAlgorithmException {
         String query = "INSERT INTO users (name, password, email, phone, address, profilePicture, roleid) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String hashedPassword = PasswordUtils.hashPassword(user.getPassword());
+
         try(PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getName());
-            statement.setString(2, user.getPassword());
+            statement.setString(2, hashedPassword);
             statement.setString(3, user.getEmail());
             statement.setString(4, user.getPhone());
             statement.setString(5, user.getAddress());
@@ -74,7 +78,7 @@ public class UserRepositoryImp implements UserRepository {
             statement.setString(1, email);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    
+
                     User user = new User(
                             resultSet.getInt("id"),
                             resultSet.getString("name"),
