@@ -27,9 +27,9 @@ public class Main {
 
       MainGUI gui = new MainGUI();
 //        gui.testConnection();
-//        gui.MigrateEntities();
+        gui.MigrateEntities();
         //gui.addUserforAdmin();
-        gui.start();
+        //gui.start();
 
 
 
