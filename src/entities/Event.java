@@ -1,5 +1,7 @@
 package entities;
 
+import Enums.EventType;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -8,13 +10,13 @@ public class Event {
     private String title;
     private LocalDate date;
     private LocalTime time;
-    private String location;  // Can be the name of the space or a physical address
-    private String type;  // Example: "Meeting", "Workshop"
-    private double price;  // Event-specific price
-    private int spaceId;  // ID of the space related to this event
+    private String location;
+    private EventType type;
+    private double price;
+    private int spaceId;
 
     // Constructor
-    public Event(int id, String title, LocalDate date, LocalTime time, String location, String type, double price, int spaceId) {
+    public Event(int id, String title, LocalDate date, LocalTime time, String location, EventType type, double price, int spaceId) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -25,7 +27,6 @@ public class Event {
         this.spaceId = spaceId;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -66,11 +67,11 @@ public class Event {
         this.location = location;
     }
 
-    public String getType() {
+    public EventType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(EventType type) {
         this.type = type;
     }
 
