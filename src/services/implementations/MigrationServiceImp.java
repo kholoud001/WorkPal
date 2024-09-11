@@ -52,11 +52,12 @@ public class MigrationServiceImp implements MigrationServiceInterface {
                 "id SERIAL PRIMARY KEY, " +
                 "name VARCHAR(255) NOT NULL, " +
                 "location VARCHAR(255) NOT NULL, " +
-                "type VARCHAR(255) NOT NULL, " +  // Use VARCHAR instead of Enum
-                "size INT NOT NULL, " +  // Assuming size in square meters or similar
+                "description VARCHAR(255) NOT NULL, " +
+                "type VARCHAR(255) NOT NULL, " +
+                "size INT NOT NULL, " +
                 "availability BOOLEAN, " +
-                "equipment TEXT, " +  // Fixed typo from 'equipement' to 'equipment'
-                "policy TEXT, " +  // Changed 'politique' to 'policy'
+                "equipment TEXT, " +
+                "policy TEXT, " +
                 "userId INT REFERENCES users(id)" +
                 ");";
 
@@ -75,10 +76,9 @@ public class MigrationServiceImp implements MigrationServiceInterface {
                 "title VARCHAR(255) NOT NULL, " +
                 "date DATE NOT NULL, " +
                 "time TIME NOT NULL, " +
-                "location VARCHAR(255), " +  // Or refer to the 'spaces' table
                 "type VARCHAR(255) NOT NULL, " +
-                "price DECIMAL(10, 2), " +  // Price field added
-                "spaceId INT REFERENCES spaces(id)" +  // Relationship to spaces table
+                "price DECIMAL(10, 2), " +
+                "spaceId INT REFERENCES spaces(id)" +
                 ");";
 
         try (Statement statement = connection.createStatement()) {
@@ -88,6 +88,106 @@ public class MigrationServiceImp implements MigrationServiceInterface {
 
         DatabaseConfig.getInstance().closeConnection();
     }
+
+    public void migrateFeedbackTable() throws SQLException {
+        Connection connection = DatabaseConfig.getInstance().getConnection();
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS feedbacks (" +
+                "id SERIAL PRIMARY KEY, " +
+                "comment VARCHAR(255) NOT NULL, " +
+                "spaceId INT REFERENCES spaces(id)," +
+                "userId INT REFERENCES users(id)" +
+                ");";
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(createTableSQL);
+            System.out.println("Table 'feedbacks' created successfully.");
+        }
+
+        DatabaseConfig.getInstance().closeConnection();
+    }
+
+    public void migrateAdditionalServiceable() throws SQLException {
+        Connection connection = DatabaseConfig.getInstance().getConnection();
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS additional_services (" +
+                "id SERIAL PRIMARY KEY, " +
+                "name VARCHAR(255) NOT NULL, " +
+                "quantity INT NOT NULL, " +
+                "price DECIMAL(10, 2), " +
+                "userId INT REFERENCES users(id)" +
+                ");";
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(createTableSQL);
+            System.out.println("Table 'additional services' created successfully.");
+        }
+
+        DatabaseConfig.getInstance().closeConnection();
+    }
+
+    public void migrateReservationsTable() throws SQLException {
+        Connection connection = DatabaseConfig.getInstance().getConnection();
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS reservations (" +
+                "id SERIAL PRIMARY KEY, " +
+                "start_date DATE NOT NULL, " +
+                "end_date DATE NOT NULL, " +
+                "status BOOLEAN, " +
+                "userId INT REFERENCES users(id)," +
+                "spaceId INT REFERENCES spaces(id)," +
+                "additional_serviceId INT REFERENCES additional_services(id)" +
+                ");";
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(createTableSQL);
+            System.out.println("Table 'reservations' created successfully.");
+        }
+
+        DatabaseConfig.getInstance().closeConnection();
+    }
+
+    public void migrateFavoritesTable() throws SQLException {
+        Connection connection = DatabaseConfig.getInstance().getConnection();
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS favorites (" +
+                "id SERIAL PRIMARY KEY, " +
+                "userId INT REFERENCES users(id)," +
+                "spaceId INT REFERENCES spaces(id)" +
+                ");";
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(createTableSQL);
+            System.out.println("Table 'favorites' created successfully.");
+        }
+
+        DatabaseConfig.getInstance().closeConnection();
+    }
+
+    public void migrateSubsTable() throws SQLException {
+        Connection connection = DatabaseConfig.getInstance().getConnection();
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS subscriptions (" +
+                "id SERIAL PRIMARY KEY, " +
+                "plan Text NOT NULL, " +
+                "start_date DATE NOT NULL, " +
+                "end_date DATE NOT NULL, " +
+                "status BOOLEAN, " +
+                "invoice TEXT NOT NULL, " +
+                "price DECIMAL(10, 2), " +
+                "userId INT REFERENCES users(id)" +
+                ");";
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(createTableSQL);
+            System.out.println("Table 'subscriptions' created successfully.");
+        }
+
+        DatabaseConfig.getInstance().closeConnection();
+    }
+
+
+
+
+
+
+
+
 
 
 
