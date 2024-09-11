@@ -126,6 +126,8 @@ public class MainGUI {
         try {
             migrationService.migrateRolesTable();
             migrationService.migrateUsersTable();
+            migrationService.migrateSpacesTable();
+            migrationService.migrateEventsTable();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
