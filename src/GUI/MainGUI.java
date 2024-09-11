@@ -124,10 +124,15 @@ public class MainGUI {
     //Migrate entities
     public void MigrateEntities() {
         try {
-            migrationService.migrateRolesTable();
-            migrationService.migrateUsersTable();
+//            migrationService.migrateRolesTable();
+//            migrationService.migrateUsersTable();
             migrationService.migrateSpacesTable();
-            migrationService.migrateEventsTable();
+//            migrationService.migrateEventsTable();
+//            migrationService.migrateFeedbackTable();
+//            migrationService.migrateAdditionalServiceable();
+//            migrationService.migrateReservationsTable();
+//            migrationService.migrateFavoritesTable();
+//            migrationService.migrateSubsTable();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
