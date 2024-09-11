@@ -1,11 +1,12 @@
 package repositories.implementations;
 
 import entities.Space;
+import repositories.interfaces.SpaceRepository;
 
 import java.sql.Connection;
 import java.util.HashMap;
 
-public class SpaceRepositoryImp {
+public class SpaceRepositoryImp implements SpaceRepository {
 
     Connection connection;
     UserRepositoryImp userRepository;
