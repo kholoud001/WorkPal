@@ -10,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class AuthGUI {
 
@@ -108,8 +107,6 @@ public class AuthGUI {
         }
 
         Role selectedRole = roles.get(roleChoice - 1);
-
-        // Call service to register the user
         boolean success = userService.register(name, password, email, phone, address, profilePicture, selectedRole.getId());
 
         if (success) {

@@ -3,14 +3,18 @@ package GUI;
 import config.DatabaseConfig;
 import entities.User;
 import repositories.implementations.RoleRepositoryImp;
+import repositories.implementations.SpaceRepositoryImp;
 import repositories.implementations.UserRepositoryImp;
 import repositories.interfaces.RoleRepository;
+import repositories.interfaces.SpaceRepository;
 import repositories.interfaces.UserRepository;
 import services.implementations.MigrationServiceImp;
 import services.implementations.RoleServiceImp;
+import services.implementations.SpaceServiceImp;
 import services.implementations.UserServiceImp;
 import services.interfaces.MigrationServiceInterface;
 import services.interfaces.RoleService;
+import services.interfaces.SpaceService;
 import services.interfaces.UserService;
 
 import java.security.NoSuchAlgorithmException;
@@ -30,9 +34,11 @@ public class MainGUI {
     // Instantiate User and Role repositories
     RoleRepository roleRepository = new RoleRepositoryImp(connection);
     UserRepository userRepository = new UserRepositoryImp(connection, roleRepository);
+    SpaceRepository spaceRepository = new SpaceRepositoryImp(connection,userRepository);
 
     // Instantiate a concrete implementation of UserService
     UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
+    SpaceService scpaceService = new SpaceServiceImp(userRepository,spaceRepository,connection);
 
 
 
@@ -67,10 +73,12 @@ public class MainGUI {
                         if (user.getRole().getId()==1) {
                             AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                             adminGUI.displayMenuAdmin();
-                        } else {
-                            System.out.println("You are logged in as a regular user.");
+                        } else if (user.getRole().getId()==3) {
+                            ManagerGUI managerGUI = new ManagerGUI(userService,scpaceService,scanner);
+                            managerGUI.displayMenuManager();
                         }
                     }
+
                     break;
 
                 case "2":
@@ -82,10 +90,12 @@ public class MainGUI {
                             if (user.getRole().getId()==1) {
                                 AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                                 adminGUI.displayMenuAdmin();
-                            } else {
-                                System.out.println("You are logged in as a regular user.");
+                            } else if (user.getRole().getId()==3) {
+                                ManagerGUI managerGUI = new ManagerGUI(userService,scpaceService,scanner);
+                                managerGUI.displayMenuManager();
                             }
                         }
+
                     } catch (NoSuchAlgorithmException e) {
                         System.out.println("Registration error: " + e.getMessage());
                     }

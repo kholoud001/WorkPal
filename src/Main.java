@@ -45,7 +45,7 @@ public class Main {
 //        gui.testConnection();
         //gui.MigrateEntities();
         //gui.addUserforAdmin();
-        //gui.start();
+        gui.start();
 
 
 
