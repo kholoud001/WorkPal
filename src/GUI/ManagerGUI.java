@@ -15,8 +15,9 @@ public class ManagerGUI {
     private User currentUser;
     private Scanner scanner;
 
-    public ManagerGUI(UserService userService, SpaceService spaceService, Scanner scanner) {
+    public ManagerGUI(UserService userService,User currentUser, SpaceService spaceService, Scanner scanner) {
         this.userService = userService;
+        this.currentUser = currentUser;
         this.spaceService = spaceService;
         this.scanner = scanner;
     }
@@ -59,7 +60,7 @@ public class ManagerGUI {
         System.out.print("Enter the description: ");
         String description = scanner.nextLine();
 
-        System.out.print("Enter the size (in square meters): ");
+        System.out.print("Enter the size (seats): ");
         int size = Integer.parseInt(scanner.nextLine());
 
         System.out.print("Is the space available (true/false): ");

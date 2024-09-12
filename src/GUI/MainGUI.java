@@ -74,7 +74,7 @@ public class MainGUI {
                             AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                             adminGUI.displayMenuAdmin();
                         } else if (user.getRole().getId()==3) {
-                            ManagerGUI managerGUI = new ManagerGUI(userService,scpaceService,scanner);
+                            ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,scanner);
                             managerGUI.displayMenuManager();
                         }
                     }
@@ -91,7 +91,7 @@ public class MainGUI {
                                 AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                                 adminGUI.displayMenuAdmin();
                             } else if (user.getRole().getId()==3) {
-                                ManagerGUI managerGUI = new ManagerGUI(userService,scpaceService,scanner);
+                                ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,scanner);
                                 managerGUI.displayMenuManager();
                             }
                         }
