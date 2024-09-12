@@ -7,6 +7,7 @@ import services.interfaces.SpaceService;
 import services.interfaces.UserService;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class ManagerGUI {
@@ -37,6 +38,7 @@ public class ManagerGUI {
                     addNewSpace();
                     break;
                 case "2":
+                    displayAllSpaces();
                     break;
                 case "0":
                     System.out.println("Logging out...");
@@ -81,22 +83,31 @@ public class ManagerGUI {
         spaceService.addSpace(currentUser, name, location, description, type, size, availability, equipment, policy);
     }
 
-//    public void viewAllSpaces() {
-//        try {
-//            List<Space> spaces = spaceService.getAllSpaces();
-//            System.out.println("*********** Available Spaces ***********");
-//            for (Space space : spaces) {
-//                System.out.println("ID: " + space.getId() +
-//                        " | Name: " + space.getName() +
-//                        " | Location: " + space.getLocation() +
-//                        " | Type: " + space.getType() +
-//                        " | Size: " + space.getSize() +
-//                        " sqm | Available: " + space.isAvailability());
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("Error retrieving spaces: " + e.getMessage());
-//        }
-//    }
+    public void displayAllSpaces() {
+        System.out.println("*********** All Spaces ***********");
+        try {
+            HashMap<Integer, Space> spaces = spaceService.getAllSpaces();
+
+            if (spaces.isEmpty()) {
+                System.out.println("No spaces found.");
+            } else {
+                for (Space space : spaces.values()) {
+                    System.out.println("ID: " + space.getId());
+                    System.out.println("Name: " + space.getName());
+                    System.out.println("Location: " + space.getLocation());
+                    System.out.println("Description: " + space.getDescription());
+                    System.out.println("Type: " + space.getType());
+                    System.out.println("Size: " + space.getSize());
+                    System.out.println("Availability: " + (space.isAvailability() ? "Available" : "Not Available"));
+                    System.out.println("Equipment: " + space.getEquipment());
+                    System.out.println("Policy: " + space.getPolicy());
+                    System.out.println("------------------------------------");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching spaces: " + e.getMessage());
+        }
+    }
 
 
 

@@ -1,5 +1,6 @@
 package repositories.implementations;
 
+import Enums.TypeSpace;
 import entities.Space;
 import repositories.interfaces.SpaceRepository;
 import repositories.interfaces.UserRepository;
@@ -8,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class SpaceRepositoryImp implements SpaceRepository {
@@ -50,6 +53,33 @@ public class SpaceRepositoryImp implements SpaceRepository {
             spaces.put(space.getId(), space);
         }
     }
+
+    public HashMap<Integer, Space> getSpaces() throws SQLException {
+        String query = "SELECT * FROM spaces";
+        HashMap<Integer, Space> spaces = new HashMap<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String location = rs.getString("location");
+                String description = rs.getString("description");
+                TypeSpace type = TypeSpace.valueOf(rs.getString("type"));
+                int size = rs.getInt("size");
+                boolean availability = rs.getBoolean("availability");
+                String equipment = rs.getString("equipment");
+                String policy = rs.getString("policy");
+                int userId = rs.getInt("userId");
+
+                Space space = new Space(id, name, location, description, type, size, availability, equipment, policy, userId);
+                spaces.put(id, space);
+            }
+        }
+        return spaces;
+    }
+
 
 
 }

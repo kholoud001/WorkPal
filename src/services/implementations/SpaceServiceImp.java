@@ -10,6 +10,7 @@ import services.interfaces.SpaceService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Optional;
 
 public class SpaceServiceImp implements SpaceService {
@@ -42,6 +43,8 @@ public class SpaceServiceImp implements SpaceService {
         }
     }
 
-
+    public HashMap<Integer, Space> getAllSpaces() throws SQLException {
+        return spaceRepository.getSpaces();
+    }
 
 }
