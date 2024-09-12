@@ -3,14 +3,18 @@ package GUI;
 import config.DatabaseConfig;
 import entities.User;
 import repositories.implementations.RoleRepositoryImp;
+import repositories.implementations.SpaceRepositoryImp;
 import repositories.implementations.UserRepositoryImp;
 import repositories.interfaces.RoleRepository;
+import repositories.interfaces.SpaceRepository;
 import repositories.interfaces.UserRepository;
 import services.implementations.MigrationServiceImp;
 import services.implementations.RoleServiceImp;
+import services.implementations.SpaceServiceImp;
 import services.implementations.UserServiceImp;
 import services.interfaces.MigrationServiceInterface;
 import services.interfaces.RoleService;
+import services.interfaces.SpaceService;
 import services.interfaces.UserService;
 
 import java.security.NoSuchAlgorithmException;
@@ -27,20 +31,24 @@ public class MainGUI {
     Connection connection = dbConfig.getConnection();
     //migration entities
     MigrationServiceInterface migrationService = new MigrationServiceImp();
-
     // Instantiate User and Role repositories
     RoleRepository roleRepository = new RoleRepositoryImp(connection);
     UserRepository userRepository = new UserRepositoryImp(connection, roleRepository);
+    SpaceRepository spaceRepository = new SpaceRepositoryImp(connection,userRepository);
 
     // Instantiate a concrete implementation of UserService
     UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
-    RoleService roleService = new RoleServiceImp(roleRepository, connection);
-    //GUI for authentification
-    AuthGUI authGUI = new AuthGUI(roleService, userService);
+    SpaceService scpaceService = new SpaceServiceImp(userRepository,spaceRepository,connection);
 
 
-    public MainGUI() throws SQLException {
 
+
+    private AuthGUI authGUI;
+    private Scanner scanner;
+
+    public MainGUI(AuthGUI authGUI, Scanner scanner) throws SQLException {
+        this.authGUI = authGUI;
+        this.scanner = scanner;
     }
     // Start the application
     public void start() {
@@ -63,12 +71,14 @@ public class MainGUI {
                     if (loggedInUser.isPresent()) {
                         User user = loggedInUser.get();
                         if (user.getRole().getId()==1) {
-                            AdminGUI adminGUI = new AdminGUI(userService, user);
+                            AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                             adminGUI.displayMenuAdmin();
-                        } else {
-                            System.out.println("You are logged in as a regular user.");
+                        } else if (user.getRole().getId()==3) {
+                            ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,scanner);
+                            managerGUI.displayMenuManager();
                         }
                     }
+
                     break;
 
                 case "2":
@@ -78,12 +88,14 @@ public class MainGUI {
                         if (loggedInUser.isPresent()) {
                             User user = loggedInUser.get();
                             if (user.getRole().getId()==1) {
-                                AdminGUI adminGUI = new AdminGUI(userService, user);
+                                AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                                 adminGUI.displayMenuAdmin();
-                            } else {
-                                System.out.println("You are logged in as a regular user.");
+                            } else if (user.getRole().getId()==3) {
+                                ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,scanner);
+                                managerGUI.displayMenuManager();
                             }
                         }
+
                     } catch (NoSuchAlgorithmException e) {
                         System.out.println("Registration error: " + e.getMessage());
                     }
@@ -106,8 +118,6 @@ public class MainGUI {
     // test connection to database
     public void testConnection() {
         try {
-
-
             if (connection != null && connection.isValid(5)) {
                 System.out.println("Database connection is valid.");
             } else {
@@ -124,10 +134,15 @@ public class MainGUI {
     //Migrate entities
     public void MigrateEntities() {
         try {
-            migrationService.migrateRolesTable();
-            migrationService.migrateUsersTable();
+//            migrationService.migrateRolesTable();
+//            migrationService.migrateUsersTable();
             migrationService.migrateSpacesTable();
-            migrationService.migrateEventsTable();
+//            migrationService.migrateEventsTable();
+//            migrationService.migrateFeedbackTable();
+//            migrationService.migrateAdditionalServiceable();
+//            migrationService.migrateReservationsTable();
+//            migrationService.migrateFavoritesTable();
+//            migrationService.migrateSubsTable();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

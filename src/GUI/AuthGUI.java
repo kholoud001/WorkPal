@@ -10,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class AuthGUI {
 
@@ -19,13 +18,13 @@ public class AuthGUI {
     private  Scanner scanner;
 
 
-    public AuthGUI(RoleService roleService, UserService userService) {
+    public AuthGUI(RoleService roleService, UserService userService,Scanner scanner) {
         this.roleService = roleService;
         this.userService = userService;
+        this.scanner = scanner;
     }
 
     public Optional<User> login() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("*********** Login ***********");
 
         System.out.println("Enter your e-mail address:");
@@ -47,7 +46,6 @@ public class AuthGUI {
     }
 
     public void register() throws NoSuchAlgorithmException {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("*********** Regsiter ***********");
 
 
@@ -109,8 +107,6 @@ public class AuthGUI {
         }
 
         Role selectedRole = roles.get(roleChoice - 1);
-
-        // Call service to register the user
         boolean success = userService.register(name, password, email, phone, address, profilePicture, selectedRole.getId());
 
         if (success) {

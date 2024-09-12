@@ -6,26 +6,26 @@ public class Space {
     private int id;
     private String name;
     private String location;
+    private String description;
     private TypeSpace type;
     private int size;
     private boolean availability;
     private String equipment;
     private String policy;
     private int userId;
-    private double price;
 
     // Constructor
-    public Space(int id, String name, String location, TypeSpace type, int size, boolean availability, String equipment, String policy, int userId, double price) {
+    public Space(int id, String name, String location, String description, TypeSpace type, int size, boolean availability, String equipment, String policy, int userId) {
         this.id = id;
         this.name = name;
         this.location = location;
+        this.description = description;
         this.type = type;
         this.size = size;
         this.availability = availability;
         this.equipment = equipment;
         this.policy = policy;
         this.userId = userId;
-        this.price = price;
     }
 
     // Getters and Setters
@@ -101,13 +101,7 @@ public class Space {
         this.userId = userId;
     }
 
-    public double getPrice() {
-        return price;
-    }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     @Override
     public String toString() {
@@ -121,7 +115,14 @@ public class Space {
                 ", equipment='" + equipment + '\'' +
                 ", policy='" + policy + '\'' +
                 ", userId=" + userId +
-                ", price=" + price +
                 '}';
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

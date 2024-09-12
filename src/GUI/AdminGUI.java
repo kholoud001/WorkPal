@@ -14,15 +14,17 @@ public class AdminGUI {
 
     private final UserService userService;
     private final User currentUser;
+    private final Scanner scanner;
 
 
-    public AdminGUI(UserService userService, User currentUser) {
+
+    public AdminGUI(UserService userService, User currentUser, Scanner scanner) {
         this.userService = userService;
         this.currentUser = currentUser;
+        this.scanner = scanner;
     }
 
     public void displayMenuAdmin() {
-        Scanner scanner = new Scanner(System.in);
 
         int choix;
         do {
@@ -60,7 +62,6 @@ public class AdminGUI {
 
 
     public void addNewUser() {
-        Scanner scanner = new Scanner(System.in);
 
         // Gathering input from the admin
         System.out.println("*********** Add New User ***********");
@@ -119,7 +120,6 @@ public class AdminGUI {
     }
 
     public void updateExistingUser() {
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("*********** Update User ***********");
 
@@ -185,7 +185,6 @@ public class AdminGUI {
     }
 
     public void deleteUser() {
-        Scanner scanner = new Scanner(System.in);
 
         // Prompt admin to enter the user ID to delete
         System.out.println("*********** Delete User ***********");
