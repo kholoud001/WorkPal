@@ -27,20 +27,22 @@ public class MainGUI {
     Connection connection = dbConfig.getConnection();
     //migration entities
     MigrationServiceInterface migrationService = new MigrationServiceImp();
-
     // Instantiate User and Role repositories
     RoleRepository roleRepository = new RoleRepositoryImp(connection);
     UserRepository userRepository = new UserRepositoryImp(connection, roleRepository);
 
     // Instantiate a concrete implementation of UserService
     UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
-    RoleService roleService = new RoleServiceImp(roleRepository, connection);
-    //GUI for authentification
-    AuthGUI authGUI = new AuthGUI(roleService, userService);
 
 
-    public MainGUI() throws SQLException {
 
+
+    private AuthGUI authGUI;
+    private Scanner scanner;
+
+    public MainGUI(AuthGUI authGUI, Scanner scanner) throws SQLException {
+        this.authGUI = authGUI;
+        this.scanner = scanner;
     }
     // Start the application
     public void start() {
@@ -63,7 +65,7 @@ public class MainGUI {
                     if (loggedInUser.isPresent()) {
                         User user = loggedInUser.get();
                         if (user.getRole().getId()==1) {
-                            AdminGUI adminGUI = new AdminGUI(userService, user);
+                            AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                             adminGUI.displayMenuAdmin();
                         } else {
                             System.out.println("You are logged in as a regular user.");
@@ -78,7 +80,7 @@ public class MainGUI {
                         if (loggedInUser.isPresent()) {
                             User user = loggedInUser.get();
                             if (user.getRole().getId()==1) {
-                                AdminGUI adminGUI = new AdminGUI(userService, user);
+                                AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                                 adminGUI.displayMenuAdmin();
                             } else {
                                 System.out.println("You are logged in as a regular user.");
@@ -106,8 +108,6 @@ public class MainGUI {
     // test connection to database
     public void testConnection() {
         try {
-
-
             if (connection != null && connection.isValid(5)) {
                 System.out.println("Database connection is valid.");
             } else {

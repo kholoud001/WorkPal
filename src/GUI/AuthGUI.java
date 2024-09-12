@@ -19,13 +19,13 @@ public class AuthGUI {
     private  Scanner scanner;
 
 
-    public AuthGUI(RoleService roleService, UserService userService) {
+    public AuthGUI(RoleService roleService, UserService userService,Scanner scanner) {
         this.roleService = roleService;
         this.userService = userService;
+        this.scanner = scanner;
     }
 
     public Optional<User> login() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("*********** Login ***********");
 
         System.out.println("Enter your e-mail address:");
@@ -47,7 +47,6 @@ public class AuthGUI {
     }
 
     public void register() throws NoSuchAlgorithmException {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("*********** Regsiter ***********");
 
 
