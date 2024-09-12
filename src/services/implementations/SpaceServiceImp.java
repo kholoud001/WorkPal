@@ -67,5 +67,38 @@ public class SpaceServiceImp implements SpaceService {
         }
     }
 
+    public boolean updateSpace( Space updatedSpace) throws SQLException {
+
+        boolean isUpdated = spaceRepository.updateSpace(updatedSpace);
+
+        if (isUpdated) {
+            System.out.println("Space updated successfully.");
+        } else {
+            System.out.println("Failed to update space.");
+        }
+
+        return isUpdated;
+    }
+
+    public Optional<Space> findSpaceById(int spaceId) {
+        try {
+            Optional<Space> spaceOptional = spaceRepository.findById(spaceId);
+
+            if (spaceOptional.isPresent()) {
+                return spaceOptional;
+            } else {
+                System.out.println("Space not found with ID: " + spaceId);
+            }
+        } catch (Exception e) {
+            System.out.println("Error fetching space: " + e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+
+
+
+
+
 
 }

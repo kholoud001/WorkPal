@@ -104,6 +104,31 @@ public class SpaceRepositoryImp implements SpaceRepository {
         }
     }
 
+    public boolean updateSpace(Space space) throws SQLException {
+        String query = "UPDATE spaces SET name = ?, location = ?, description = ?, type = ?, size = ?, availability = ?, equipment = ?, policy = ? WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, space.getName());
+            preparedStatement.setString(2, space.getLocation());
+            preparedStatement.setString(3, space.getDescription());
+            preparedStatement.setString(4, space.getType().name()); // Assuming type is an Enum
+            preparedStatement.setInt(5, space.getSize());
+            preparedStatement.setBoolean(6, space.isAvailability());
+            preparedStatement.setString(7, space.getEquipment());
+            preparedStatement.setString(8, space.getPolicy());
+            preparedStatement.setInt(9, space.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // Return true if the update was successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
     public Optional<Space> findById(int spaceId) {
         String query = "SELECT * FROM spaces WHERE id = ?";
 
