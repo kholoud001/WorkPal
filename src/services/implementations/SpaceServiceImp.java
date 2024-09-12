@@ -47,4 +47,25 @@ public class SpaceServiceImp implements SpaceService {
         return spaceRepository.getSpaces();
     }
 
+    public Optional<Space> deleteSpace(User currentUser, Integer spaceId) {
+
+        Optional<Space> spaceOptional = spaceRepository.findById(spaceId);
+        if (!spaceOptional.isPresent()) {
+            System.out.println("Space not found.");
+            return Optional.empty();
+        }
+        Space spaceToDelete = spaceOptional.get();
+
+        // Call the repository method to delete the user
+        Space deletedSpace = spaceRepository.deleteSpace(spaceToDelete);
+        if (deletedSpace != null) {
+            //System.out.println("Space deleted successfully: " + deletedUser.getName());
+            return Optional.of(spaceToDelete);
+        } else {
+            //System.out.println("Failed to delete the space.");
+            return Optional.empty();
+        }
+    }
+
+
 }

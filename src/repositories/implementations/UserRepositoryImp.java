@@ -100,7 +100,6 @@ public class UserRepositoryImp implements UserRepository {
     public User deleteUser(User user) {
         String query = "DELETE FROM users WHERE id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            // Set the ID of the user to be deleted
             preparedStatement.setInt(1, user.getId());
 
             // Execute the update to delete the user

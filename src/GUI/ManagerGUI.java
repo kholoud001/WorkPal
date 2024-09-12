@@ -8,6 +8,7 @@ import services.interfaces.UserService;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ManagerGUI {
@@ -29,6 +30,7 @@ public class ManagerGUI {
             System.out.println("\n*** Manager Menu ***");
             System.out.println("1. Add New Space");
             System.out.println("2. View All Spaces");
+            System.out.println("3. Delete Space");
             System.out.println("0. Logout");
 
             String choice = scanner.nextLine();
@@ -39,6 +41,9 @@ public class ManagerGUI {
                     break;
                 case "2":
                     displayAllSpaces();
+                    break;
+                case "3":
+                    deleteSpace();
                     break;
                 case "0":
                     System.out.println("Logging out...");
@@ -108,6 +113,33 @@ public class ManagerGUI {
             System.out.println("Error fetching spaces: " + e.getMessage());
         }
     }
+
+    public void deleteSpace() {
+
+        displayAllSpaces();
+
+        System.out.println("\n*********** Delete Space ***********");
+
+        // Ask the user for the space ID to delete
+        System.out.print("Enter the ID of the space to delete: ");
+        int spaceId = Integer.parseInt(scanner.nextLine());
+
+        try {
+            // Call the service method to delete the space
+            Optional<Space> deletedSpace = spaceService.deleteSpace(currentUser, spaceId);
+
+            // Check the result
+            if (deletedSpace.isPresent()) {
+                System.out.println("Space deleted successfully.");
+            } else {
+                System.out.println("Failed to delete the space. Either you don't have permission or the space does not exist.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error deleting space: " + e.getMessage());
+        }
+    }
+
 
 
 

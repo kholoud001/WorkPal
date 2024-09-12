@@ -1,7 +1,9 @@
 package repositories.implementations;
 
 import Enums.TypeSpace;
+import entities.Role;
 import entities.Space;
+import entities.User;
 import repositories.interfaces.SpaceRepository;
 import repositories.interfaces.UserRepository;
 
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class SpaceRepositoryImp implements SpaceRepository {
 
@@ -79,6 +82,60 @@ public class SpaceRepositoryImp implements SpaceRepository {
         }
         return spaces;
     }
+
+    public Space deleteSpace(Space space) {
+        String query = "DELETE FROM spaces WHERE id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, space.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                //System.out.println("Space deleted successfully!");
+                return space;
+            } else {
+                //System.out.println("Space deletion failed. No user found with the given ID.");
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error occurred while deleting space.");
+            return null;
+        }
+    }
+
+    public Optional<Space> findById(int spaceId) {
+        String query = "SELECT * FROM spaces WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, spaceId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Space space = new Space(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("location"),
+                            resultSet.getString("description"),
+                            TypeSpace.valueOf(resultSet.getString("type")),
+                            resultSet.getInt("size"),
+                            resultSet.getBoolean("availability"),
+                            resultSet.getString("equipment"),
+                            resultSet.getString("policy"),
+                            resultSet.getInt("userId")
+                    );
+                    return Optional.of(space);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+
+
+
 
 
 
