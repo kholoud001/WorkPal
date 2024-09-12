@@ -132,7 +132,7 @@ public class ManagerGUI {
             if (deletedSpace.isPresent()) {
                 System.out.println("Space deleted successfully.");
             } else {
-                System.out.println("Failed to delete the space. Either you don't have permission or the space does not exist.");
+                System.out.println("Failed to delete the space. Either you don't have permission or the space is available.");
             }
 
         } catch (Exception e) {

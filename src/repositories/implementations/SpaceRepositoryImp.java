@@ -84,7 +84,7 @@ public class SpaceRepositoryImp implements SpaceRepository {
     }
 
     public Space deleteSpace(Space space) {
-        String query = "DELETE FROM spaces WHERE id = ?";
+        String query = "DELETE FROM spaces WHERE id = ? AND availability = false";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, space.getId());
 
