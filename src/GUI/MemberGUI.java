@@ -6,6 +6,7 @@ import services.interfaces.AdditionalSService;
 import services.interfaces.ReservationService;
 import services.interfaces.SpaceService;
 import services.interfaces.UserService;
+import utils.GMailer;
 import utils.SpaceDisplayUtils;
 
 import java.sql.SQLException;
@@ -97,9 +98,11 @@ public class MemberGUI {
             System.out.print("Enter additional service ID: ");
             additionalServiceId = scanner.nextInt();
         }
-
         reservationService.createReservation(startDate, endDate, true, currentUser.getId(), spaceId, additionalServiceId);
         System.out.println("Reservation made successfully!");
+
+
+
     }
 
 }

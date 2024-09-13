@@ -32,7 +32,7 @@ public class MainGUI {
     UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
     SpaceService scpaceService = new SpaceServiceImp(userRepository,spaceRepository,connection);
     AdditionalSService additionalSService =new AdditionalSServiceImp(additionalServiceRepository);
-    ReservationService reservationService = new ReservationServiceimp(resRepository);
+    ReservationService reservationService = new ReservationServiceimp(resRepository,userService);
 
 
 
