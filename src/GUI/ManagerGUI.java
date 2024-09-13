@@ -31,6 +31,7 @@ public class ManagerGUI {
             System.out.println("1. Add New Space");
             System.out.println("2. View All Spaces");
             System.out.println("3. Delete Space");
+            System.out.println("4. Update Space details");
             System.out.println("0. Logout");
 
             String choice = scanner.nextLine();
@@ -44,6 +45,9 @@ public class ManagerGUI {
                     break;
                 case "3":
                     deleteSpace();
+                    break;
+                case "4":
+                    updateSpaceDetails();
                     break;
                 case "0":
                     System.out.println("Logging out...");
@@ -139,6 +143,80 @@ public class ManagerGUI {
             System.out.println("Error deleting space: " + e.getMessage());
         }
     }
+
+    public void updateSpaceDetails() {
+
+        displayAllSpaces();
+        System.out.println("\n*********** Update Space Details ***********");
+
+        System.out.print("Enter the ID of the space you want to update: ");
+        int spaceId = Integer.parseInt(scanner.nextLine());
+
+        try {
+            Optional<Space> spaceOptional = spaceService.findSpaceById(spaceId);
+
+            if (spaceOptional.isPresent()) {
+                Space space = spaceOptional.get();
+
+                System.out.print("Enter the new name (" + space.getName() + "): ");
+                String name = scanner.nextLine();
+                if (name.isEmpty()) {
+                    name = space.getName();
+                }
+
+                System.out.print("Enter the new location (" + space.getLocation() + "): ");
+                String location = scanner.nextLine();
+                if(location.isEmpty()){
+                    location=space.getLocation();
+                }
+
+                System.out.print("Enter the new description (" + space.getDescription() + "): ");
+                String description = scanner.nextLine();
+                if (description.isEmpty()) {
+                    description = space.getDescription();
+                }
+
+                System.out.print("Enter the new size (" + space.getSize() + "): ");
+                String sizeInput = scanner.nextLine();
+                int size = sizeInput.isEmpty() ? space.getSize() : Integer.parseInt(sizeInput);
+
+                System.out.print("Is the space available (true/false): ");
+                String availabilityInput = scanner.nextLine();
+                boolean availability = availabilityInput.isEmpty() ? space.isAvailability() : Boolean.parseBoolean(availabilityInput);
+
+                System.out.print("Enter the new equipment (" + space.getEquipment() + "): ");
+                String equipment = scanner.nextLine();
+                if(equipment.isEmpty()){
+                    equipment = space.getEquipment();
+                }
+
+                System.out.print("Enter the new policy (" + space.getPolicy() + "): ");
+                String policy = scanner.nextLine();
+                if(policy.isEmpty()){
+                    policy = space.getPolicy();
+                }
+
+                System.out.print("Enter the new type (MEETING_ROOM, WORKSPACE) [" + space.getType() + "]: ");
+                String typeInput = scanner.nextLine();
+                TypeSpace type = typeInput.isEmpty() ? space.getType() : TypeSpace.valueOf(typeInput.toUpperCase());
+
+                Space updatedSpace = new Space(spaceId, name, location, description, type, size, availability, equipment, policy, currentUser.getId());
+
+                boolean isUpdated = spaceService.updateSpace(updatedSpace);
+
+                if (isUpdated) {
+                    System.out.println("Space updated successfully.");
+                } else {
+                    System.out.println("Failed to update space.");
+                }
+            } else {
+                System.out.println("Space with the provided ID does not exist.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error updating space: " + e.getMessage());
+        }
+    }
+
 
 
 

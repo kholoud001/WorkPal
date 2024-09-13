@@ -11,6 +11,8 @@ public interface SpaceRepository {
     public void addSpace(Space space) throws SQLException;
     public HashMap<Integer, Space> getSpaces() throws SQLException;
     public Space deleteSpace(Space space);
+    public boolean updateSpace(Space space) throws SQLException;
     public Optional<Space> findById(int spaceId);
+
 
 }

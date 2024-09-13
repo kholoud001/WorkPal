@@ -15,4 +15,9 @@ public interface SpaceService {
     public HashMap<Integer, Space> getAllSpaces() throws SQLException;
 
     public Optional<Space> deleteSpace(User currentUser, Integer spaceId);
+
+    public boolean updateSpace( Space updatedSpace) throws SQLException;
+
+    public Optional<Space> findSpaceById(int spaceId) ;
+
 }
