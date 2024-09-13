@@ -72,9 +72,9 @@ public class SpaceServiceImp implements SpaceService {
         boolean isUpdated = spaceRepository.updateSpace(updatedSpace);
 
         if (isUpdated) {
-            System.out.println("Space updated successfully.");
+            //System.out.println("Space updated successfully.");
         } else {
-            System.out.println("Failed to update space.");
+           // System.out.println("Failed to update space.");
         }
 
         return isUpdated;

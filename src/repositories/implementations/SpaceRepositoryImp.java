@@ -119,7 +119,7 @@ public class SpaceRepositoryImp implements SpaceRepository {
             preparedStatement.setInt(9, space.getId());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; // Return true if the update was successful
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

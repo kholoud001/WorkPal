@@ -145,6 +145,8 @@ public class ManagerGUI {
     }
 
     public void updateSpaceDetails() {
+
+        displayAllSpaces();
         System.out.println("\n*********** Update Space Details ***********");
 
         System.out.print("Enter the ID of the space you want to update: ");
@@ -158,29 +160,45 @@ public class ManagerGUI {
 
                 System.out.print("Enter the new name (" + space.getName() + "): ");
                 String name = scanner.nextLine();
+                if (name.isEmpty()) {
+                    name = space.getName();
+                }
 
                 System.out.print("Enter the new location (" + space.getLocation() + "): ");
                 String location = scanner.nextLine();
+                if(location.isEmpty()){
+                    location=space.getLocation();
+                }
 
                 System.out.print("Enter the new description (" + space.getDescription() + "): ");
                 String description = scanner.nextLine();
+                if (description.isEmpty()) {
+                    description = space.getDescription();
+                }
 
                 System.out.print("Enter the new size (" + space.getSize() + "): ");
-                int size = Integer.parseInt(scanner.nextLine());
+                String sizeInput = scanner.nextLine();
+                int size = sizeInput.isEmpty() ? space.getSize() : Integer.parseInt(sizeInput);
 
                 System.out.print("Is the space available (true/false): ");
-                boolean availability = Boolean.parseBoolean(scanner.nextLine());
+                String availabilityInput = scanner.nextLine();
+                boolean availability = availabilityInput.isEmpty() ? space.isAvailability() : Boolean.parseBoolean(availabilityInput);
 
                 System.out.print("Enter the new equipment (" + space.getEquipment() + "): ");
                 String equipment = scanner.nextLine();
+                if(equipment.isEmpty()){
+                    equipment = space.getEquipment();
+                }
 
                 System.out.print("Enter the new policy (" + space.getPolicy() + "): ");
                 String policy = scanner.nextLine();
+                if(policy.isEmpty()){
+                    policy = space.getPolicy();
+                }
 
-                // Assuming SpaceType is an enum
                 System.out.print("Enter the new type (MEETING_ROOM, WORKSPACE) [" + space.getType() + "]: ");
                 String typeInput = scanner.nextLine();
-                TypeSpace type = TypeSpace.valueOf(typeInput.toUpperCase());
+                TypeSpace type = typeInput.isEmpty() ? space.getType() : TypeSpace.valueOf(typeInput.toUpperCase());
 
                 Space updatedSpace = new Space(spaceId, name, location, description, type, size, availability, equipment, policy, currentUser.getId());
 
