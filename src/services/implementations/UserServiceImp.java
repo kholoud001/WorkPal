@@ -9,6 +9,7 @@ import utils.PasswordUtils;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class UserServiceImp  implements UserService {
@@ -209,6 +210,10 @@ public class UserServiceImp  implements UserService {
             //System.out.println("Failed to delete the user.");
             return Optional.empty();
         }
+    }
+
+    public String getUserEmailById(int userId) throws SQLException {
+        return userRepository.findEmailByUserId(userId);
     }
 
 

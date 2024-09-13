@@ -4,6 +4,7 @@ import entities.Role;
 import entities.User;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -18,5 +19,8 @@ public interface UserRepository {
     public Collection<User> findUserByRole(Role role);
 
     User updateUser(User userToUpdate);
+
     public User deleteUser(User user);
+
+    public String findEmailByUserId(int userId) throws SQLException;
 }
