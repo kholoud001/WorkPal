@@ -1,13 +1,16 @@
 package GUI;
 
+import entities.Space;
 import entities.User;
 import services.interfaces.AdditionalSService;
 import services.interfaces.ReservationService;
 import services.interfaces.SpaceService;
 import services.interfaces.UserService;
+import utils.SpaceDisplayUtils;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class MemberGUI {
@@ -28,8 +31,9 @@ public class MemberGUI {
 //        this.scanner = scanner ;
 //    }
 
-    public MemberGUI(ReservationService reservationService, User currentUser, Scanner scanner) {
+    public MemberGUI(ReservationService reservationService,SpaceService spaceService, User currentUser, Scanner scanner) {
         this.reservationService = reservationService;
+        this.spaceService = spaceService;
         this.currentUser = currentUser;
         this.scanner = scanner;
     }
@@ -62,8 +66,18 @@ public class MemberGUI {
         }
     }
 
+    public void displayAllSpaces() {
+        try {
+            HashMap<Integer, Space> spaces = spaceService.getAllSpaces();
+            SpaceDisplayUtils.displayAllSpaces(spaces);
+        } catch (SQLException e) {
+            System.out.println("Error fetching spaces: " + e.getMessage());
+        }
+    }
+
     public void reserveSpace() throws SQLException {
-        System.out.print("Enter start date (yyyy-mm-dd): ");
+        displayAllSpaces();
+        System.out.print("\n Enter start date (yyyy-mm-dd): ");
         String startDateStr = scanner.nextLine();
         LocalDate startDate = LocalDate.parse(startDateStr);
 

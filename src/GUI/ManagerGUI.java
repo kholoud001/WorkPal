@@ -6,6 +6,7 @@ import entities.User;
 import services.interfaces.AdditionalSService;
 import services.interfaces.SpaceService;
 import services.interfaces.UserService;
+import utils.SpaceDisplayUtils;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -100,31 +101,13 @@ public class ManagerGUI {
     }
 
     public void displayAllSpaces() {
-        System.out.println("*********** All Spaces ***********");
         try {
             HashMap<Integer, Space> spaces = spaceService.getAllSpaces();
-
-            if (spaces.isEmpty()) {
-                System.out.println("No spaces found.");
-            } else {
-                for (Space space : spaces.values()) {
-                    System.out.println("ID: " + space.getId());
-                    System.out.println("Name: " + space.getName());
-                    System.out.println("Location: " + space.getLocation());
-                    System.out.println("Description: " + space.getDescription());
-                    System.out.println("Type: " + space.getType());
-                    System.out.println("Size: " + space.getSize());
-                    System.out.println("Availability: " + (space.isAvailability() ? "Available" : "Not Available"));
-                    System.out.println("Equipment: " + space.getEquipment());
-                    System.out.println("Policy: " + space.getPolicy());
-                    System.out.println("------------------------------------");
-                }
-            }
+            SpaceDisplayUtils.displayAllSpaces(spaces);
         } catch (SQLException e) {
             System.out.println("Error fetching spaces: " + e.getMessage());
         }
     }
-
     public void deleteSpace() {
 
         displayAllSpaces();

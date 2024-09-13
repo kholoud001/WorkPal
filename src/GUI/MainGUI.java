@@ -72,7 +72,7 @@ public class MainGUI {
                             managerGUI.displayMenuManager();
                         }
                         else if (user.getRole().getId()==2) {
-                            MemberGUI memberGUI= new MemberGUI(reservationService,user,scanner);
+                            MemberGUI memberGUI= new MemberGUI(reservationService,scpaceService,user,scanner);
                             memberGUI.displayMemberMenu();
                         }
                     }
@@ -93,7 +93,7 @@ public class MainGUI {
                                 managerGUI.displayMenuManager();
                             }
                             else if (user.getRole().getId()==2) {
-                                MemberGUI memberGUI= new MemberGUI(reservationService,user,scanner);
+                                MemberGUI memberGUI= new MemberGUI(reservationService,scpaceService,user,scanner);
                                 memberGUI.displayMemberMenu();
                             }
                         }
