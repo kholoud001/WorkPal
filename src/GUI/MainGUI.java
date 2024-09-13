@@ -2,14 +2,8 @@ package GUI;
 
 import config.DatabaseConfig;
 import entities.User;
-import repositories.implementations.AdditionalServiceRepositoryImp;
-import repositories.implementations.RoleRepositoryImp;
-import repositories.implementations.SpaceRepositoryImp;
-import repositories.implementations.UserRepositoryImp;
-import repositories.interfaces.AdditionalServiceRepository;
-import repositories.interfaces.RoleRepository;
-import repositories.interfaces.SpaceRepository;
-import repositories.interfaces.UserRepository;
+import repositories.implementations.*;
+import repositories.interfaces.*;
 import services.implementations.*;
 import services.interfaces.*;
 
@@ -32,12 +26,13 @@ public class MainGUI {
     UserRepository userRepository = new UserRepositoryImp(connection, roleRepository);
     SpaceRepository spaceRepository = new SpaceRepositoryImp(connection,userRepository);
     AdditionalServiceRepository additionalServiceRepository = new AdditionalServiceRepositoryImp(connection,userRepository);
+    ReservationRepository resRepository = new ReservationRepositoryImp(connection);
 
     // Instantiate a concrete implementation of UserService
     UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
     SpaceService scpaceService = new SpaceServiceImp(userRepository,spaceRepository,connection);
-
     AdditionalSService additionalSService =new AdditionalSServiceImp(additionalServiceRepository);
+    ReservationService reservationService = new ReservationServiceimp(resRepository);
 
 
 
@@ -76,6 +71,10 @@ public class MainGUI {
                             ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,additionalSService,scanner);
                             managerGUI.displayMenuManager();
                         }
+                        else if (user.getRole().getId()==2) {
+                            MemberGUI memberGUI= new MemberGUI(reservationService,scpaceService,user,scanner);
+                            memberGUI.displayMemberMenu();
+                        }
                     }
 
                     break;
@@ -92,6 +91,10 @@ public class MainGUI {
                             } else if (user.getRole().getId()==3) {
                                 ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,additionalSService,scanner);
                                 managerGUI.displayMenuManager();
+                            }
+                            else if (user.getRole().getId()==2) {
+                                MemberGUI memberGUI= new MemberGUI(reservationService,scpaceService,user,scanner);
+                                memberGUI.displayMemberMenu();
                             }
                         }
 
