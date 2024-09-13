@@ -2,20 +2,16 @@ package GUI;
 
 import config.DatabaseConfig;
 import entities.User;
+import repositories.implementations.AdditionalServiceRepositoryImp;
 import repositories.implementations.RoleRepositoryImp;
 import repositories.implementations.SpaceRepositoryImp;
 import repositories.implementations.UserRepositoryImp;
+import repositories.interfaces.AdditionalServiceRepository;
 import repositories.interfaces.RoleRepository;
 import repositories.interfaces.SpaceRepository;
 import repositories.interfaces.UserRepository;
-import services.implementations.MigrationServiceImp;
-import services.implementations.RoleServiceImp;
-import services.implementations.SpaceServiceImp;
-import services.implementations.UserServiceImp;
-import services.interfaces.MigrationServiceInterface;
-import services.interfaces.RoleService;
-import services.interfaces.SpaceService;
-import services.interfaces.UserService;
+import services.implementations.*;
+import services.interfaces.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -35,10 +31,13 @@ public class MainGUI {
     RoleRepository roleRepository = new RoleRepositoryImp(connection);
     UserRepository userRepository = new UserRepositoryImp(connection, roleRepository);
     SpaceRepository spaceRepository = new SpaceRepositoryImp(connection,userRepository);
+    AdditionalServiceRepository additionalServiceRepository = new AdditionalServiceRepositoryImp(connection,userRepository);
 
     // Instantiate a concrete implementation of UserService
     UserService userService = new UserServiceImp(connection, userRepository, roleRepository);
     SpaceService scpaceService = new SpaceServiceImp(userRepository,spaceRepository,connection);
+
+    AdditionalSService additionalSService =new AdditionalSServiceImp(additionalServiceRepository);
 
 
 
@@ -51,7 +50,7 @@ public class MainGUI {
         this.scanner = scanner;
     }
     // Start the application
-    public void start() {
+    public void start() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         Optional<User> loggedInUser = Optional.empty();
         boolean exit = false;
@@ -74,7 +73,7 @@ public class MainGUI {
                             AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                             adminGUI.displayMenuAdmin();
                         } else if (user.getRole().getId()==3) {
-                            ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,scanner);
+                            ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,additionalSService,scanner);
                             managerGUI.displayMenuManager();
                         }
                     }
@@ -91,7 +90,7 @@ public class MainGUI {
                                 AdminGUI adminGUI = new AdminGUI(userService, user,scanner);
                                 adminGUI.displayMenuAdmin();
                             } else if (user.getRole().getId()==3) {
-                                ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,scanner);
+                                ManagerGUI managerGUI = new ManagerGUI(userService,user,scpaceService,additionalSService,scanner);
                                 managerGUI.displayMenuManager();
                             }
                         }

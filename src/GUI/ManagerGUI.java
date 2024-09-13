@@ -3,6 +3,7 @@ package GUI;
 import Enums.TypeSpace;
 import entities.Space;
 import entities.User;
+import services.interfaces.AdditionalSService;
 import services.interfaces.SpaceService;
 import services.interfaces.UserService;
 
@@ -14,17 +15,19 @@ import java.util.Scanner;
 public class ManagerGUI {
     private UserService userService;
     private SpaceService spaceService;
+    private AdditionalSService additionalServiceService;
     private User currentUser;
     private Scanner scanner;
 
-    public ManagerGUI(UserService userService,User currentUser, SpaceService spaceService, Scanner scanner) {
+    public ManagerGUI(UserService userService,User currentUser, SpaceService spaceService, AdditionalSService additionalServiceService, Scanner scanner) {
         this.userService = userService;
         this.currentUser = currentUser;
         this.spaceService = spaceService;
+        this.additionalServiceService = additionalServiceService;
         this.scanner = scanner;
     }
 
-    public void displayMenuManager() {
+    public void displayMenuManager() throws SQLException {
         boolean exit = false;
         while (!exit) {
             System.out.println("\n*** Manager Menu ***");
@@ -32,6 +35,7 @@ public class ManagerGUI {
             System.out.println("2. View All Spaces");
             System.out.println("3. Delete Space");
             System.out.println("4. Update Space details");
+            System.out.println("5. Add additional service");
             System.out.println("0. Logout");
 
             String choice = scanner.nextLine();
@@ -48,6 +52,9 @@ public class ManagerGUI {
                     break;
                 case "4":
                     updateSpaceDetails();
+                    break;
+                case "5":
+                    addAdditionalService();
                     break;
                 case "0":
                     System.out.println("Logging out...");
@@ -216,6 +223,25 @@ public class ManagerGUI {
             System.out.println("Error updating space: " + e.getMessage());
         }
     }
+
+
+    ///////////////////////// Additional services Management //////////////////////////////////////
+
+    private void addAdditionalService() throws SQLException {
+        System.out.print("Enter service name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter quantity: ");
+        int quantity = scanner.nextInt();
+
+        System.out.print("Enter price: ");
+        double price = scanner.nextDouble();
+
+        int userId = currentUser.getId();
+
+        additionalServiceService.addService(name, quantity, price, userId);
+    }
+
 
 
 
