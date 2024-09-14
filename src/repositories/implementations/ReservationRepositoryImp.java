@@ -5,14 +5,27 @@ import repositories.interfaces.ReservationRepository;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 public class ReservationRepositoryImp implements ReservationRepository {
 
     private Connection connection;
+    private HashMap<String, Reservation> reservations;
 
     public ReservationRepositoryImp(Connection connection) {
+
         this.connection = connection;
+        this.reservations = new HashMap<>();
     }
+
+//    public HashMap<String, Reservation> getReservations() throws SQLException {
+//        String query= "SELECT * FROM reservations";
+//        try(PreparedStatement stmt = connection.prepareStatement(query)){
+//            ResultSet rs = stmt.executeQuery();
+//
+//
+//        }
+//    }
 
     public void add(Reservation reservation) throws SQLException {
         String query = "INSERT INTO reservations (start_date, end_date, status, userId, spaceId, additional_serviceId) " +

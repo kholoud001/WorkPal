@@ -128,7 +128,6 @@ public class SpaceRepositoryImp implements SpaceRepository {
 
 
 
-
     public Optional<Space> findById(int spaceId) {
         String query = "SELECT * FROM spaces WHERE id = ?";
 
