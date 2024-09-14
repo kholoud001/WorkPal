@@ -45,6 +45,29 @@ public class ReservationServiceimp implements ReservationService {
 
     }
 
+    public  void cancelReservation(int reservationId, int userId) throws SQLException {
+        try {
+            reservationRepository.cancelReservation(reservationId);
+
+        } catch (SQLException e) {
+            System.out.println("Error cancelling reservation: " + e.getMessage());
+        }
+        //Send email
+        String userEmail = userService.getUserEmailById(userId);
+        System.out.println(userEmail);
+
+        String subject = "Reservation Cancelation";
+        String body = String.format("Dear User,\n\nYour reservation has been successfully canceled.\n\nThank you!");
+
+        try {
+            GMailer.sendEmail(userEmail, subject, body);
+            System.out.println("Confirmation email sent! Please check your inbox");
+        } catch (Exception e) {
+            System.err.println("Error sending confirmation email: " + e.getMessage());
+        }
+
+    }
+
     }
 
 

@@ -35,4 +35,19 @@ public class ReservationRepositoryImp implements ReservationRepository {
             stmt.executeUpdate();
         }
     }
+
+    public void cancelReservation(int reservationId) throws SQLException {
+        String query = "UPDATE reservations SET status=? WHERE id=?";
+
+        try(PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setBoolean(1, false);
+            stmt.setInt(2, reservationId);
+            int state= stmt.executeUpdate();
+            if (state >0) {
+                System.out.println("Reservation cancelled successfully.");
+            } else {
+                System.out.println("Reservation not found.");
+            }
+        }
+    }
 }
