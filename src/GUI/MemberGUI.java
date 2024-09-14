@@ -46,6 +46,7 @@ public class MemberGUI {
             System.out.println("\n==== Member Menu ====");
             System.out.println("1. Reserve a space");
 //            System.out.println("2. View your reservations");
+            System.out.println("2. Cancel Reservation");
             System.out.println("0. Logout");
 
             System.out.print("Enter your choice: ");
@@ -57,6 +58,7 @@ public class MemberGUI {
                     reserveSpace();
                     break;
                 case 2:
+                    cancelReservation();
                     break;
                 case 0:
                     System.out.println("Logging out...");
@@ -105,4 +107,12 @@ public class MemberGUI {
 
     }
 
-}
+    public void cancelReservation() throws SQLException {
+        System.out.print("Enter the reservation ID to cancel: ");
+        int reservationId = scanner.nextInt();
+
+        reservationService.cancelReservation(reservationId,currentUser.getId());
+        System.out.println("Cancellation process complete.");
+    }
+
+    }
