@@ -38,7 +38,7 @@ public class ReservationServiceimp implements ReservationService {
 
         try {
             GMailer.sendEmail(userEmail, subject, body);
-            System.out.println("Reservation made and confirmation email sent!");
+            System.out.println("Confirmation email sent! Please check your inbox");
         } catch (Exception e) {
             System.err.println("Error sending confirmation email: " + e.getMessage());
         }
